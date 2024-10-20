@@ -1,0 +1,54 @@
+﻿<Window x:Class="TestWpfApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TestWpfApp" xmlns:viewmodel="clr-namespace:GrandSmetaReader.ViewModel"
+        mc:Ignorable="d"
+        Title="GrandSmetaReader" Height="500" Width="800">
+    <Window.Resources>
+        <DataTemplate x:Key="level3">
+            <Grid Margin="30,0,0,0" ShowGridLines="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"></ColumnDefinition>
+                    <ColumnDefinition Width="450"></ColumnDefinition>
+                    <ColumnDefinition Width="100"></ColumnDefinition>
+                    <ColumnDefinition Width="100"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding Code}" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0"/>
+                <TextBlock Text="{Binding Caption}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top"  Grid.Column="1"/>
+                <TextBlock Text="{Binding Units}"  TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top"  Grid.Column="2"/>
+                <TextBlock Text="{Binding Quantity}" HorizontalAlignment="Left" VerticalAlignment="Top"  Grid.Column="3"/>
+            </Grid>
+        </DataTemplate>
+        <HierarchicalDataTemplate x:Key="level2" ItemsSource="{Binding Path=ResourcesList}" ItemTemplate="{StaticResource level3}">
+            <Grid Margin="0,0,0,0" ShowGridLines="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="150"></ColumnDefinition>
+                    <ColumnDefinition Width="350"></ColumnDefinition>
+                    <ColumnDefinition Width="100"></ColumnDefinition>
+                    <ColumnDefinition Width="100"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding Number}" FontWeight="DemiBold"  HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0"/>
+                <TextBlock Text="{Binding Code}" FontWeight="DemiBold" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1"/>
+                <TextBlock Text="{Binding Caption}" FontWeight="DemiBold" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top"  Grid.Column="2"/>
+                <TextBlock Text="{Binding Units}"  TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top"  Grid.Column="3"/>
+                <TextBlock Text="{Binding Qnty.Result}" HorizontalAlignment="Left" VerticalAlignment="Top"  Grid.Column="4"/>
+            </Grid>
+        </HierarchicalDataTemplate>
+        <HierarchicalDataTemplate x:Key="level1" ItemsSource="{Binding Path=Positions}" ItemTemplate="{StaticResource level2}">
+            <TextBlock Text="{Binding Path=Caption}" FontWeight="Bold" />
+        </HierarchicalDataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
+            <Button x:Name="export" Content="ExportToExcel" Click="exportButton_Click" />
+        </StackPanel>
+        <TreeView Grid.Row="1" ItemTemplate="{StaticResource level1}" ItemsSource="{Binding Chapters}" Name="tvSmeta"/>
+    </Grid>
+</Window>
